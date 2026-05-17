@@ -31,13 +31,13 @@
     <div class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
         <h2 class="font-semibold text-[#1E2749] mb-3">Accesos rápidos</h2>
         <div class="space-y-2">
-            <a href="{{ route('directorio.create') }}" class="flex items-center gap-2 text-sm text-[#004494] hover:underline">
+            <a href="/directorio/create" class="flex items-center gap-2 text-sm text-[#004494] hover:underline">
                 + Nueva organización
             </a>
-            <a href="{{ route('profesionales.create') }}" class="flex items-center gap-2 text-sm text-[#004494] hover:underline">
+            <a href="/directorio/profesionales/create" class="flex items-center gap-2 text-sm text-[#004494] hover:underline">
                 + Nuevo profesional
             </a>
-            <a href="{{ route('admin-usuarios.create') }}" class="flex items-center gap-2 text-sm text-[#004494] hover:underline">
+            <a href="/admin-usuarios/create" class="flex items-center gap-2 text-sm text-[#004494] hover:underline">
                 + Nuevo usuario admin
             </a>
         </div>
