@@ -24,7 +24,8 @@ class ProfesionalesController extends Controller
 
     public function create()
     {
-        return view('directorio.profesionales.create');
+        $regiones = $this->getRegiones();
+        return view('directorio.profesionales.create', compact('regiones'));
     }
 
     public function store(Request $request)
@@ -37,6 +38,8 @@ class ProfesionalesController extends Controller
             'email_contacto'   => 'nullable|email',
             'telefono'         => 'nullable|string|max:50',
             'linkedin_url'     => 'nullable|url',
+            'foto_url'         => 'nullable|url',
+            'region_id'        => 'nullable|uuid',
             'verificado'       => 'boolean',
             'activo'           => 'boolean',
         ]);
@@ -55,7 +58,8 @@ class ProfesionalesController extends Controller
     public function edit(string $id)
     {
         $profesional = DB::table('profesionales')->where('id', $id)->firstOrFail();
-        return view('directorio.profesionales.edit', compact('profesional'));
+        $regiones    = $this->getRegiones();
+        return view('directorio.profesionales.edit', compact('profesional', 'regiones'));
     }
 
     public function update(Request $request, string $id)
@@ -68,6 +72,8 @@ class ProfesionalesController extends Controller
             'email_contacto'   => 'nullable|email',
             'telefono'         => 'nullable|string|max:50',
             'linkedin_url'     => 'nullable|url',
+            'foto_url'         => 'nullable|url',
+            'region_id'        => 'nullable|uuid',
             'verificado'       => 'boolean',
             'activo'           => 'boolean',
         ]);
@@ -85,5 +91,14 @@ class ProfesionalesController extends Controller
     {
         DB::table('profesionales')->where('id', $id)->delete();
         return redirect()->route('profesionales.index')->with('success', 'Profesional eliminado.');
+    }
+
+    private function getRegiones()
+    {
+        try {
+            return DB::table('regiones')->orderBy('nombre')->get();
+        } catch (\Throwable $e) {
+            return collect();
+        }
     }
 }

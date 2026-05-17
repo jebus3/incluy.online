@@ -8,9 +8,21 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminUsuariosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $usuarios = DB::table('admin_users')->orderBy('username')->get();
+        $query = DB::table('admin_users')->orderBy('username');
+
+        if ($request->filled('buscar')) {
+            $query->where(function($q) use ($request) {
+                $q->where('username', 'ilike', '%' . $request->buscar . '%')
+                  ->orWhere('email', 'ilike', '%' . $request->buscar . '%');
+            });
+        }
+        if ($request->filled('rol')) {
+            $query->where('role', $request->rol);
+        }
+
+        $usuarios = $query->paginate(20)->withQueryString();
         return view('admin-usuarios.index', compact('usuarios'));
     }
 

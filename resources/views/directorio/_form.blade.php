@@ -51,6 +51,33 @@
         <input type="text" name="rut" value="{{ $v('rut') }}"
                class="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#004494]/30">
     </div>
+
+    <div class="col-span-2">
+        <label class="block text-sm font-medium text-[#1E2749] mb-1.5">URL del logo</label>
+        <input type="url" name="logo_url" value="{{ $v('logo_url') }}"
+               placeholder="https://..."
+               class="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#004494]/30">
+        @if($v('logo_url'))
+            <div class="mt-2 flex items-center gap-3">
+                <img src="{{ $v('logo_url') }}" alt="Logo" class="h-12 w-12 object-contain rounded border border-gray-200">
+                <span class="text-xs text-[#6B7C93]">Logo actual</span>
+            </div>
+        @endif
+    </div>
+
+    @if(isset($regiones) && $regiones->count())
+    <div>
+        <label class="block text-sm font-medium text-[#1E2749] mb-1.5">Región</label>
+        <select name="region_id" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#004494]/30">
+            <option value="">— Sin región —</option>
+            @foreach($regiones as $region)
+                <option value="{{ $region->id }}" {{ $v('region_id') == $region->id ? 'selected' : '' }}>
+                    {{ $region->nombre }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    @endif
 </div>
 
 <div class="flex flex-wrap gap-6 pt-2">

@@ -24,7 +24,8 @@ class DirectorioController extends Controller
 
     public function create()
     {
-        return view('directorio.create');
+        $regiones = $this->getRegiones();
+        return view('directorio.create', compact('regiones'));
     }
 
     public function store(Request $request)
@@ -37,6 +38,8 @@ class DirectorioController extends Controller
             'email_contacto' => 'nullable|email',
             'telefono'       => 'nullable|string|max:50',
             'sitio_web'      => 'nullable|url',
+            'logo_url'       => 'nullable|url',
+            'region_id'      => 'nullable|uuid',
             'verificada'     => 'boolean',
             'activa'         => 'boolean',
         ]);
@@ -54,8 +57,9 @@ class DirectorioController extends Controller
 
     public function edit(string $id)
     {
-        $org = DB::table('entidades')->where('id', $id)->firstOrFail();
-        return view('directorio.edit', compact('org'));
+        $org      = DB::table('entidades')->where('id', $id)->firstOrFail();
+        $regiones = $this->getRegiones();
+        return view('directorio.edit', compact('org', 'regiones'));
     }
 
     public function update(Request $request, string $id)
@@ -68,6 +72,8 @@ class DirectorioController extends Controller
             'email_contacto' => 'nullable|email',
             'telefono'       => 'nullable|string|max:50',
             'sitio_web'      => 'nullable|url',
+            'logo_url'       => 'nullable|url',
+            'region_id'      => 'nullable|uuid',
             'verificada'     => 'boolean',
             'activa'         => 'boolean',
         ]);
@@ -85,5 +91,14 @@ class DirectorioController extends Controller
     {
         DB::table('entidades')->where('id', $id)->delete();
         return redirect()->route('directorio.index')->with('success', 'Organización eliminada.');
+    }
+
+    private function getRegiones()
+    {
+        try {
+            return DB::table('regiones')->orderBy('nombre')->get();
+        } catch (\Throwable $e) {
+            return collect();
+        }
     }
 }

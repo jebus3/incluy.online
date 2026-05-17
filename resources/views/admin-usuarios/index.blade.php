@@ -4,7 +4,7 @@
 <div class="flex items-center justify-between mb-6">
     <div>
         <h1 class="text-2xl font-bold text-[#0A0E27]">Usuarios Admin</h1>
-        <p class="text-[#6B7C93] text-sm mt-1">{{ count($usuarios) }} usuarios registrados</p>
+        <p class="text-[#6B7C93] text-sm mt-1">{{ $usuarios->total() }} usuarios registrados</p>
     </div>
     <a href="/admin-usuarios/create"
        class="px-4 py-2 rounded-lg text-white text-sm font-medium hover:opacity-90 transition"
@@ -12,6 +12,22 @@
         + Nuevo usuario
     </a>
 </div>
+
+<form method="GET" class="flex gap-3 mb-5">
+    <input type="text" name="buscar" value="{{ request('buscar') }}"
+        placeholder="Buscar por usuario o email..."
+        class="px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#004494]/30 w-72">
+    <select name="rol" class="px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#004494]/30">
+        <option value="">Todos los roles</option>
+        @foreach(['super_admin','admin','editor'] as $r)
+            <option value="{{ $r }}" {{ request('rol') == $r ? 'selected' : '' }}>{{ ucwords(str_replace('_',' ',$r)) }}</option>
+        @endforeach
+    </select>
+    <button type="submit" class="px-4 py-2 bg-[#004494] text-white rounded-lg text-sm hover:opacity-90 transition">Filtrar</button>
+    @if(request('buscar') || request('rol'))
+        <a href="/admin-usuarios" class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-[#6B7C93] hover:bg-gray-50 transition">Limpiar</a>
+    @endif
+</form>
 
 <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
     <table class="w-full text-sm">
@@ -37,7 +53,7 @@
                 <td class="px-4 py-3">
                     <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
                         {{ $u->role === 'super_admin' ? 'bg-purple-50 text-purple-700' : ($u->role === 'admin' ? 'bg-blue-50 text-blue-700' : 'bg-gray-100 text-gray-600') }}">
-                        {{ $u->role }}
+                        {{ ucwords(str_replace('_',' ',$u->role)) }}
                     </span>
                 </td>
                 <td class="px-4 py-3 text-[#6B7C93] text-xs">{{ \Carbon\Carbon::parse($u->created_at)->format('d/m/Y') }}</td>
@@ -54,10 +70,14 @@
             </tr>
             @empty
             <tr>
-                <td colspan="5" class="px-4 py-8 text-center text-[#6B7C93]">No hay usuarios registrados.</td>
+                <td colspan="5" class="px-4 py-8 text-center text-[#6B7C93]">No hay usuarios que coincidan.</td>
             </tr>
             @endforelse
         </tbody>
     </table>
+</div>
+
+<div class="mt-4">
+    {{ $usuarios->links() }}
 </div>
 @endsection
