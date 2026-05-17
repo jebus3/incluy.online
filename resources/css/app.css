@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+:root {
+    --violet: #004494;
+    --pink:   #3C2D6D;
+    --orange: #B38F23;
+    --deep:   #0A0E27;
+    --slate:  #1E2749;
+    --gray:   #6B7C93;
+    --ice:    #F0F4F8;
+}
