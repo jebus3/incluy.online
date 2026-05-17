@@ -8,6 +8,10 @@ use App\Http\Controllers\AdminUsuariosController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/ping', function() { return 'pong — Laravel OK — ' . now(); });
+Route::get('/test-dir', [DirectorioController::class, 'index']);
+Route::get('/test-session', function() {
+    return 'session admin: ' . (session('admin') ? json_encode(session('admin')) : 'VACÍA');
+});
 
 Route::get('/login',  [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
