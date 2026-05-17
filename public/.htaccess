@@ -23,3 +23,8 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Fallback para servidores sin mod_rewrite activo
+<IfModule !mod_rewrite.c>
+    FallbackResource /index.php
+</IfModule>

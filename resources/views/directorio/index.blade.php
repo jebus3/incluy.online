@@ -8,7 +8,7 @@
         <h1 class="text-2xl font-bold text-[#0A0E27]">Organizaciones</h1>
         <p class="text-[#6B7C93] text-sm mt-1">{{ $organizaciones->total() }} registros totales</p>
     </div>
-    <a href="{{ route('directorio.create') }}"
+    <a href="/directorio/create"
        class="px-4 py-2 rounded-lg text-white text-sm font-medium hover:opacity-90 transition"
        style="background: linear-gradient(135deg, #004494, #3C2D6D)">
         + Nueva organización
@@ -28,7 +28,7 @@
     </select>
     <button type="submit" class="px-4 py-2 bg-[#004494] text-white rounded-lg text-sm hover:opacity-90 transition">Filtrar</button>
     @if(request('buscar') || request('tipo'))
-        <a href="{{ route('directorio.index') }}" class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-[#6B7C93] hover:bg-gray-50 transition">Limpiar</a>
+        <a href="/directorio" class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-[#6B7C93] hover:bg-gray-50 transition">Limpiar</a>
     @endif
 </form>
 
@@ -61,8 +61,8 @@
                     @endif
                 </td>
                 <td class="px-4 py-3 text-right">
-                    <a href="{{ route('directorio.edit', $org->id) }}" class="text-[#004494] hover:underline text-xs mr-3">Editar</a>
-                    <form method="POST" action="{{ route('directorio.destroy', $org->id) }}" class="inline"
+                    <a href="/directorio/{{ $org->id }}/edit" class="text-[#004494] hover:underline text-xs mr-3">Editar</a>
+                    <form method="POST" action="/directorio/{{ $org->id }}" class="inline"
                           x-data x-on:submit.prevent="if(confirm('¿Eliminar esta organización?')) $el.submit()">
                         @csrf @method('DELETE')
                         <button type="submit" class="text-red-500 hover:underline text-xs">Eliminar</button>

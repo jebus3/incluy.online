@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-bold text-[#0A0E27]">Usuarios Admin</h1>
         <p class="text-[#6B7C93] text-sm mt-1">{{ count($usuarios) }} usuarios registrados</p>
     </div>
-    <a href="{{ route('admin-usuarios.create') }}"
+    <a href="/admin-usuarios/create"
        class="px-4 py-2 rounded-lg text-white text-sm font-medium hover:opacity-90 transition"
        style="background: linear-gradient(135deg, #004494, #3C2D6D)">
         + Nuevo usuario
@@ -42,9 +42,9 @@
                 </td>
                 <td class="px-4 py-3 text-[#6B7C93] text-xs">{{ \Carbon\Carbon::parse($u->created_at)->format('d/m/Y') }}</td>
                 <td class="px-4 py-3 text-right">
-                    <a href="{{ route('admin-usuarios.edit', $u->id) }}" class="text-[#004494] hover:underline text-xs mr-3">Editar</a>
+                    <a href="/admin-usuarios/{{ $u->id }}/edit" class="text-[#004494] hover:underline text-xs mr-3">Editar</a>
                     @if(session('admin.id') != $u->id)
-                    <form method="POST" action="{{ route('admin-usuarios.destroy', $u->id) }}" class="inline"
+                    <form method="POST" action="/admin-usuarios/{{ $u->id }}" class="inline"
                           x-data x-on:submit.prevent="if(confirm('¿Eliminar este usuario?')) $el.submit()">
                         @csrf @method('DELETE')
                         <button type="submit" class="text-red-500 hover:underline text-xs">Eliminar</button>
