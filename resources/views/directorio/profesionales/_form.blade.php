@@ -1,7 +1,17 @@
-@php $v = fn($field) => old($field, $profesional?->$field ?? ''); @endphp
+@php
+    $v       = fn($field) => old($field, $profesional?->$field ?? '');
+    $autoSlug = (!isset($profesional) || !$profesional || !$profesional->slug) ? 'true' : 'false';
+@endphp
 
 {{-- SECCIÓN: Información básica --}}
-<div class="mb-6">
+<div class="mb-6" x-data="{
+    autoSlug: {{ $autoSlug }},
+    slugify(t) {
+        return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+            .replace(/[^a-z0-9\s]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
+    },
+    onNombre(val) { if (this.autoSlug) this.$refs.slug.value = this.slugify(val); }
+}">
     <h3 class="text-sm font-semibold text-[#004494] uppercase tracking-wide mb-3 pb-1 border-b border-gray-200">
         Información básica
     </h3>
@@ -9,12 +19,18 @@
         <div class="col-span-2">
             <label class="block text-sm font-medium text-[#1E2749] mb-1.5">Nombre completo <span class="text-red-500">*</span></label>
             <input type="text" name="nombre_completo" value="{{ $v('nombre_completo') }}" required
+                   @input="onNombre($event.target.value)"
                    class="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#004494]/30">
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-[#1E2749] mb-1.5">Slug <span class="text-red-500">*</span></label>
+            <label class="block text-sm font-medium text-[#1E2749] mb-1.5">
+                Slug <span class="text-red-500">*</span>
+                <span x-show="autoSlug" class="text-xs font-normal text-[#6B7C93] ml-1">(auto)</span>
+            </label>
             <input type="text" name="slug" value="{{ $v('slug') }}" required
+                   x-ref="slug"
+                   @input="autoSlug = false"
                    class="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#004494]/30">
         </div>
 

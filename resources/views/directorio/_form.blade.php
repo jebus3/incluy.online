@@ -1,15 +1,31 @@
-@php $v = fn($field) => old($field, $org?->$field ?? ''); @endphp
+@php
+    $v        = fn($field) => old($field, $org?->$field ?? '');
+    $autoSlug = (!isset($org) || !$org || !$org->slug) ? 'true' : 'false';
+@endphp
 
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-2 gap-4" x-data="{
+    autoSlug: {{ $autoSlug }},
+    slugify(t) {
+        return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+            .replace(/[^a-z0-9\s]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
+    },
+    onNombre(val) { if (this.autoSlug) this.$refs.slug.value = this.slugify(val); }
+}">
     <div class="col-span-2">
         <label class="block text-sm font-medium text-[#1E2749] mb-1.5">Nombre <span class="text-red-500">*</span></label>
         <input type="text" name="nombre" value="{{ $v('nombre') }}" required
+               @input="onNombre($event.target.value)"
                class="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#004494]/30">
     </div>
 
     <div>
-        <label class="block text-sm font-medium text-[#1E2749] mb-1.5">Slug <span class="text-red-500">*</span></label>
+        <label class="block text-sm font-medium text-[#1E2749] mb-1.5">
+            Slug <span class="text-red-500">*</span>
+            <span x-show="autoSlug" class="text-xs font-normal text-[#6B7C93] ml-1">(auto)</span>
+        </label>
         <input type="text" name="slug" value="{{ $v('slug') }}" required
+               x-ref="slug"
+               @input="autoSlug = false"
                class="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#004494]/30">
     </div>
 
