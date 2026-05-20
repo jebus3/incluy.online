@@ -1,0 +1,26 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('entidades', function (Blueprint $table) {
+            if (!Schema::hasColumn('entidades', 'region_id')) {
+                $table->uuid('region_id')->nullable();
+            }
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('entidades', function (Blueprint $table) {
+            if (Schema::hasColumn('entidades', 'region_id')) {
+                $table->dropColumn('region_id');
+            }
+        });
+    }
+};
