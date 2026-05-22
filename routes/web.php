@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DirectorioController;
 use App\Http\Controllers\ProfesionalesController;
 use App\Http\Controllers\AdminUsuariosController;
+use App\Http\Controllers\EmprendimientosController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -30,6 +31,14 @@ Route::middleware('check.admin')->group(function () {
     Route::get('/directorio/profesionales/{id}/edit',   [ProfesionalesController::class, 'edit'])->name('profesionales.edit');
     Route::put('/directorio/profesionales/{id}',        [ProfesionalesController::class, 'update'])->name('profesionales.update');
     Route::delete('/directorio/profesionales/{id}',     [ProfesionalesController::class, 'destroy'])->name('profesionales.destroy');
+
+    // Emprendimientos
+    Route::get('/emprendimientos',              [EmprendimientosController::class, 'index'])->name('emprendimientos.index');
+    Route::get('/emprendimientos/create',       [EmprendimientosController::class, 'create'])->name('emprendimientos.create');
+    Route::post('/emprendimientos',             [EmprendimientosController::class, 'store'])->name('emprendimientos.store');
+    Route::get('/emprendimientos/{id}/edit',    [EmprendimientosController::class, 'edit'])->name('emprendimientos.edit');
+    Route::put('/emprendimientos/{id}',         [EmprendimientosController::class, 'update'])->name('emprendimientos.update');
+    Route::delete('/emprendimientos/{id}',      [EmprendimientosController::class, 'destroy'])->name('emprendimientos.destroy');
 
     // Admin usuarios
     Route::get('/admin-usuarios',               [AdminUsuariosController::class, 'index'])->name('admin-usuarios.index');
